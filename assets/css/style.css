@@ -174,7 +174,7 @@ footer.site-footer {
 .tech-container .tech-badge:hover {
     background-color: var(--bg-2);
     cursor: pointer;
-    border-color: var(--accent-color, #3b82f6);
+    border-color: var(--accent);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
