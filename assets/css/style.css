@@ -230,43 +230,82 @@ footer.site-footer {
     transform: translateY(-1px);
 }*/
 
-#contactBar {
+#socialsBar {
     position: fixed;
     right: 2rem;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateY(-50%);
     background-color: var(--accent);
     border-radius: 16px;
-    padding: 5px;
+    padding: 8px;
     color: var(--bg-1);
     border: 1px solid var(--bg-3);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+    scale: 1.1;
+    transition: all .25s ease, scale .2s ease-in-out, opacity .3s ease-in;
+    opacity: 85%;
 }
 
-@media (null) {
-    #contactBar {
+@media (max-width: 768px) {
+    #socialsBar {
         display: none;
     }
 }
 
-.contact-item svg {
+#socialsBar:hover {
+    scale: 1.2;
+    opacity: 100%;
+}
+
+.social-item {
+    color: var(--bg-1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    text-decoration: none;
+}
+
+.social-item svg {
     width: 24px;
     height: 24px;
+    transition: opacity 0.2s;
 }
 
-.contact-item {
-    color: var(--bg-1);
+.social-item:hover svg {
+    opacity: 0.8;
 }
 
-.contact-item .tooltip {
+.social-item .tooltip {
     display: none;
     position: absolute;
-    position-anchor: initial;
+    right: calc(100% + 16px);
+    top: 50%;
+    transform: translateY(-50%);
     background-color: var(--bg-3);
     color: var(--fg-2);
-
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    pointer-events: none;
 }
 
-.contact-item:hover .tooltip {
+.social-item .tooltip::after {
+    content: "";
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent var(--bg-3);
+}
+
+.social-item:hover .tooltip {
     display: block;
 }
 
