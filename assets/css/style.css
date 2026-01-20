@@ -145,7 +145,7 @@ footer.site-footer {
 
 ::selection {
     color: var(--bg-2);
-    background-color: var(--fg-1);
+    background-color: var(--accent);
 }
 
 .tech-container {
@@ -229,3 +229,96 @@ footer.site-footer {
 .tech-container .tech-badge:active {
     transform: translateY(-1px);
 }*/
+
+#contactBar {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--accent);
+    border-radius: 16px;
+    padding: 5px;
+    color: var(--bg-1);
+    border: 1px solid var(--bg-3);
+}
+
+@media (null) {
+    #contactBar {
+        display: none;
+    }
+}
+
+.contact-item svg {
+    width: 24px;
+    height: 24px;
+}
+
+.contact-item {
+    color: var(--bg-1);
+}
+
+.contact-item .tooltip {
+    display: none;
+    position: absolute;
+    position-anchor: initial;
+    background-color: var(--bg-3);
+    color: var(--fg-2);
+
+}
+
+.contact-item:hover .tooltip {
+    display: block;
+}
+
+
+
+#theme-selector {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+}
+
+#themeSelect {
+    appearance: none;
+    background-color: var(--bg-2);
+    color: var(--fg-1);
+    border: 1px solid var(--bg-3);
+    border-radius: 8px;
+    padding: 8px 32px 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#themeSelect:hover {
+    border-color: var(--accent);
+}
+
+#themeSelect:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent);
+}
+
+#theme-selector::after {
+    content: "";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background-color: var(--fg-2);
+    pointer-events: none;
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" /></svg>');
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" /></svg>');
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+}
+
+#themeSelect option {
+    background-color: var(--bg-1);
+    color: var(--fg-1);
+}
