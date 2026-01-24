@@ -361,3 +361,24 @@ footer.site-footer {
     background-color: var(--bg-1);
     color: var(--fg-1);
 }
+
+
+img.pfp {
+    width: clamp(175px, 20vw, 275px);
+    height: auto;
+    border-radius: 7.23vw;
+    corner-shape: squircle;
+    rotate: -3deg;
+    margin: 14px;
+    transition: all .2s ease-in;
+    border: 2px solid var(--bg-3);
+}
+
+img.pfp:hover {
+    width: clamp(200px, 21vw, 300px);
+    height: auto;
+    border-radius: 10vw;
+    rotate: -7deg;
+    margin: 0;
+    border: 3px solid var(--bg-2);
+}
