@@ -63,6 +63,20 @@ header.site-header {
     background-color: var(--bg-2);
     border-bottom: 1px solid var(--border);
     padding: 1rem 0;
+    width: 100%;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+body.scrolled header.site-header {
+    padding: 0.1rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: rgb(from var(--bg-2) r g b / 0.8); /* thnx to https://stackoverflow.com/questions/72966406/how-can-i-automatically-convert-hex-to-rgb-in-css-using-bootstrap */
+    border-bottom: 1px solid rgb(from var(--border) r g b / 0.6);
+    backdrop-filter: blur(8px);
 }
 
 .nav-container {
@@ -80,19 +94,13 @@ header.site-header {
     color: var(--accent);
 }
 
-.nav-container .nav-links {
-    display: flex;
-    list-style: none;
-    gap: 1.2rem;
-    margin: 0;
-    padding: 0;
-}
-
 .nav-links {
     display: flex;
     gap: 0.5rem;
     list-style: none;
     align-items: center;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-links li a {
@@ -103,7 +111,10 @@ header.site-header {
     text-decoration: none;
     font-weight: 500;
     border-radius: 16px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.1s active;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        transform 0.1s ease;
 }
 
 .nav-links li a:hover {
@@ -370,7 +381,7 @@ img.pfp:hover {
 }
 
 .animate-wave {
-    animation: wave .66s linear infinite;
+    animation: wave .5s cubic-bezier(.84, -0.11, .06, 1.12) infinite;
     transform-origin: 70% 70%;
     display: inline-block;
     --wave-max: 12deg;
