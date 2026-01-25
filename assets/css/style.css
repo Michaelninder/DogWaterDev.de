@@ -481,3 +481,24 @@ a.link::after {
 a.link:hover::after {
     width: 100%;
 }
+
+
+@media (min-width: 768px) { /* EXPERIMENTAL */
+    .hero-section  {
+        transition: rotate 1s cubic-bezier(.15,1.18,.64,1);
+        rotate: 4deg;
+        padding-top: 1rem;
+    }
+
+    .hero-section:hover,
+    .hero-section:hover .hero-bio,
+    .hero-section:hover .hero-cta,
+    .hero-section:hover h1 {
+        rotate: 0deg;
+    }
+
+    .hero-section .hero-bio, .hero-section .hero-cta, .hero-section h1{
+        transition: rotate 1s cubic-bezier(.15,1.18,.64,1);
+        rotate: -4deg;
+    }
+}
