@@ -74,7 +74,8 @@ header.site-header {
 body.scrolled header.site-header {
     padding: 0.1rem 0;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    background-color: rgb(from var(--bg-2) r g b / 0.8); /* thnx to https://stackoverflow.com/questions/72966406/how-can-i-automatically-convert-hex-to-rgb-in-css-using-bootstrap */
+    background-color: rgb(from var(--bg-2) r g b / 0.8);
+    /* thnx to https://stackoverflow.com/questions/72966406/how-can-i-automatically-convert-hex-to-rgb-in-css-using-bootstrap */
     border-bottom: 1px solid rgb(from var(--border) r g b / 0.6);
     backdrop-filter: blur(8px);
 }
@@ -463,19 +464,20 @@ img.pfp:hover {
 a.link {
     text-decoration: none;
     color: var(--accent);
-    position: relative;
-    display: inline-block;
+    /*position: relative;*/
+    /*display: inline-block;*/
+    width: fit-content;
 }
 
 a.link::after {
     content: "";
     position: absolute;
     left: 0;
-    bottom: 2px;
+    bottom: 0;
     width: 0;
     height: 2px;
     background-color: var(--accent);
-    transition: width .75s cubic-bezier(.15, 1.18, .63, 1);
+    transition: width 0.75s cubic-bezier(0.15, 1.18, 0.63, 1);
 }
 
 a.link:hover::after {
@@ -483,9 +485,11 @@ a.link:hover::after {
 }
 
 
-@media (min-width: 768px) { /* EXPERIMENTAL */
-    .hero-section  {
-        transition: rotate 1s cubic-bezier(.15,1.18,.64,1);
+@media (min-width: 768px) {
+
+    /* EXPERIMENTAL */
+    .hero-section {
+        transition: rotate 1s cubic-bezier(.15, 1.18, .64, 1);
         rotate: 4deg;
         padding-top: 1rem;
     }
@@ -497,8 +501,10 @@ a.link:hover::after {
         rotate: 0deg;
     }
 
-    .hero-section .hero-bio, .hero-section .hero-cta, .hero-section h1{
-        transition: rotate 1s cubic-bezier(.15,1.18,.64,1);
+    .hero-section .hero-bio,
+    .hero-section .hero-cta,
+    .hero-section h1 {
+        transition: rotate 1s cubic-bezier(.15, 1.18, .64, 1);
         rotate: -4deg;
     }
 }
