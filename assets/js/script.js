@@ -74,12 +74,12 @@ function showToast(message, type = "info") {
 
   const toast = document.createElement("div");
   toast.className = "toast-notification";
-  
+
   // Simple icon based on context
   const icon = type === "info" ? "🚧" : "✨";
-  
+
   toast.innerHTML = `<span>${icon}</span> ${message}`;
-  
+
   document.body.appendChild(toast);
 
   // Trigger animation
@@ -98,3 +98,9 @@ function showToast(message, type = "info") {
 document.addEventListener("DOMContentLoaded", () => {
   showToast("Welcome! This site is currently W.I.P.");
 });
+
+
+
+
+
+document.getElementById('yearDisplay').textContent = new Date().getFullYear();
