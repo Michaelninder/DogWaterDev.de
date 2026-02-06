@@ -481,6 +481,7 @@ footer.site-footer {
 img.pfp {
     width: clamp(200px, 25vw, 300px);
     height: auto;
+    height: clamp(200px, 25vw, 300px);
     border-radius: 20%;
     rotate: -3deg;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -733,4 +734,17 @@ a.link:hover::after {
 
 a {
     width: fit-content;
+}
+
+section {
+    scroll-margin-top: 82px;
+    margin-bottom: 3rem;
+}
+
+section#hero {
+    scroll-margin-top: 100px;
+}
+
+html {
+  scroll-behavior: smooth;
 }
