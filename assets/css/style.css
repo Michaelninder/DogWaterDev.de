@@ -119,7 +119,7 @@ header.site-header {
     height: calc(var(--header-height) * 1.2);
     width: 100%;
     z-index: 1000;
-    transition: all 0.3s ease, height .35s cubic-bezier(.17,.67,1,1.1);
+    transition: all 0.3s ease, height .35s cubic-bezier(.17,.67,.88,1.1);
     position: fixed;
     top: 0;
     left: 0;
@@ -133,7 +133,7 @@ body.scrolled header.site-header {
     background-color: rgb(from var(--bg-2) r g b / 0.85);
     backdrop-filter: blur(12px);
     border-bottom-color: transparent;
-    transition: height .26s cubic-bezier(.17,.67,1,1.75);
+    transition: height .26s cubic-bezier(.17,.67,.5,1.75);
 }
 
 .nav-container {
@@ -341,7 +341,7 @@ footer.site-footer {
 
 .project-card:hover {
     border-color: var(--accent);
-    transform: translateY(-4px);
+    transform: translateY(-1.12px);
     box-shadow: var(--shadow);
 }
 
@@ -755,27 +755,41 @@ a.link:hover::after {
 .hero-highlight {
     position: relative;
     z-index: 1;
-    color: var(--fg-1)
+    color: var(--fg-1);
+    display: inline-block;
+    padding: 0 4px;
+    cursor: default;
 }
 
 .hero-highlight::after {
     content: "";
     position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: 2px; 
     width: 100%;
-    height: 23%;
-    /*height: 41%;*/
-    background-color: rgb(from var(--accent) r g b / 0.64);
+    height: 35%;
+    background-color: var(--accent);
+    opacity: 0.4;
     z-index: -1;
-    transition: all .1s cubic-bezier(.17, .67, .83, .67);
-    transform: translateX(1px);
+    transition: all .2s cubic-bezier(.17, .67, .83, .67);
+    border-radius: 2px;
 }
 
 .hero-highlight:hover::after {
-    height: 59%;
-    transform: translateY(-2px) translateX(2px);
-    background-color: rgb(from var(--accent) r g b / 0.46);
+    height: 77%;
+    z-index: 100;
+    opacity: 0.36;
+    transform: translateY(0);
+}
+
+@supports (background-color: rgb(from white r g b / 1)) {
+    .hero-highlight::after {
+        background-color: rgb(from var(--accent) r g b / 0.64);
+        opacity: 1;
+    }
+    .hero-highlight:hover::after {
+        background-color: rgb(from var(--accent) r g b / 0.46);
+    }
 }
 
 a {
