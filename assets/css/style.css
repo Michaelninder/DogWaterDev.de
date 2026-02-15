@@ -119,7 +119,7 @@ header.site-header {
     height: calc(var(--header-height) * 1.2);
     width: 100%;
     z-index: 1000;
-    transition: all 0.3s ease, height .35s cubic-bezier(.17,.67,.88,1.1);
+    transition: all 0.3s ease, height .35s cubic-bezier(.17, .67, .88, 1.1);
     position: fixed;
     top: 0;
     left: 0;
@@ -133,7 +133,7 @@ body.scrolled header.site-header {
     background-color: rgb(from var(--bg-2) r g b / 0.85);
     backdrop-filter: blur(12px);
     border-bottom-color: transparent;
-    transition: height .26s cubic-bezier(.17,.67,.5,1.75);
+    transition: height .26s cubic-bezier(.17, .67, .5, 1.75);
 }
 
 .nav-container {
@@ -210,6 +210,7 @@ footer.site-footer {
     padding: 5rem 20px;
     margin-top: 6rem;
     font-size: 0.95rem;
+    position: relative;
 }
 
 .footer-content {
@@ -267,6 +268,44 @@ footer.site-footer {
     height: 24px;
 }
 
+.api-powered {
+    font-size: 0.85rem;
+    color: var(--fg-2);
+    margin-top: 0.5rem;
+}
+
+.api-counter {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background-color: var(--bg-3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.api-counter:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.counter-label {
+    color: var(--fg-2);
+    font-weight: 500;
+}
+
+.counter-value {
+    color: var(--accent);
+    font-weight: 700;
+    font-family: var(--code-font);
+}
+
 @media (min-width: 769px) {
     .footer-section:not(:last-child) {
         border-right: 1px solid var(--border);
@@ -293,6 +332,16 @@ footer.site-footer {
         border-right: none;
         border-bottom: 1px solid var(--border);
         padding-bottom: 2.5rem;
+    }
+    
+    .api-counter {
+        position: static;
+        margin: 2rem auto 0;
+        width: fit-content;
+    }
+    
+    .api-powered {
+        text-align: center;
     }
 }
 
@@ -541,7 +590,7 @@ img.pfp:hover {
     rotate: 2deg;
     border-radius: 12px;
     border-color: var(--accent);
-    corner-shape: none /* ??? */;
+    corner-shape: none;
 }
 
 .hero-section {
@@ -765,7 +814,7 @@ a.link:hover::after {
     content: "";
     position: absolute;
     left: 0;
-    bottom: 2px; 
+    bottom: 2px;
     width: 100%;
     height: 35%;
     background-color: var(--accent);
@@ -787,6 +836,7 @@ a.link:hover::after {
         background-color: rgb(from var(--accent) r g b / 0.64);
         opacity: 1;
     }
+
     .hero-highlight:hover::after {
         background-color: rgb(from var(--accent) r g b / 0.46);
     }
@@ -806,5 +856,5 @@ section#hero {
 }
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
