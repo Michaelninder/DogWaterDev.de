@@ -878,27 +878,23 @@ button.social-item {
 }
 
 /*
-  Email address — each part stored REVERSED in content, displayed RTL.
-  Scrapers reading CSS get reversed strings, not a valid email.
-  Zero-width spaces (U+200B) injected via ::after break regex on raw clipboard text.
+  Email address — individual character spans shuffled in DOM order,
+  CSS flexbox `order` property controls visual order.
+  Scrapers reading textContent get a random scramble; humans see the correct address.
 */
-#emailPopover .ep-user1 { unicode-bidi: bidi-override; direction: rtl; }
-#emailPopover .ep-user1::before { content: "r"; }
-#emailPopover .ep-user1::after  { content: "\200B"; }
-#emailPopover .ep-dot1::before  { content: "."; }
-#emailPopover .ep-dot1::after   { content: "\200B"; }
-#emailPopover .ep-user2 { unicode-bidi: bidi-override; direction: rtl; }
-#emailPopover .ep-user2::before { content: "rewerb"; }
-#emailPopover .ep-user2::after  { content: "\200B"; }
-#emailPopover .ep-at::before    { content: "@"; }
-#emailPopover .ep-at::after     { content: "\200B"; }
-#emailPopover .ep-dom { unicode-bidi: bidi-override; direction: rtl; }
-#emailPopover .ep-dom::before   { content: "smetsyspx"; }
-#emailPopover .ep-dom::after    { content: "\200B"; }
-#emailPopover .ep-dot2::before  { content: "."; }
-#emailPopover .ep-dot2::after   { content: "\200B"; }
-#emailPopover .ep-tld { unicode-bidi: bidi-override; direction: rtl; }
-#emailPopover .ep-tld::before   { content: "ue"; }
+.ep-address {
+    display: flex;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    cursor: text;
+    user-select: text;
+}
+
+.ep-ch {
+    user-select: text;
+}
 
 .email-popover {
     display: none;
@@ -962,13 +958,6 @@ button.social-item {
     color: var(--fg-2);
 }
 
-.ep-address {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: 0.02em;
-    cursor: text;
-}
 
 .ep-note {
     margin: 0;

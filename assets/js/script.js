@@ -251,21 +251,33 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Shared email popover — content injected by CSS only, never by JS
   const emailPopover = document.getElementById("emailPopover");
+
+  // Characters split into individual spans with CSS order — visual order differs from DOM order.
+  // Scrapers reading textContent/innerHTML get a scrambled string, not a valid email.
+  // Humans see and select the correctly ordered address.
+  const chars = [
+    // [char, visual-order]
+    ['r',  1], ['.', 2], ['b', 3], ['r', 4], ['e', 5], ['w', 6], ['e', 7], ['r', 8],
+    ['@',  9],
+    ['x', 10], ['p', 11], ['s', 12], ['y', 13], ['s', 14], ['t', 15], ['e', 16], ['m', 17], ['s', 18],
+    ['.', 19],
+    ['e', 20], ['u', 21]
+  ];
+
+  // Shuffle DOM order so textContent is scrambled
+  const shuffled = [...chars].sort(() => Math.random() - 0.5);
+
+  const addrSpans = shuffled
+    .map(([ch, ord]) => `<span class="ep-ch" style="order:${ord}">${ch}</span>`)
+    .join('');
+
   emailPopover.innerHTML =
     '<button class="ep-close" aria-label="Close">' +
       '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
     '</button>' +
     '<p class="ep-label">Contact via E-Mail &mdash; select to copy</p>' +
-    '<div class="ep-address">' +
-      '<span class="ep-user1"></span>' +
-      '<span class="ep-dot1"></span>' +
-      '<span class="ep-user2"></span>' +
-      '<span class="ep-at"></span>' +
-      '<span class="ep-dom"></span>' +
-      '<span class="ep-dot2"></span>' +
-      '<span class="ep-tld"></span>' +
-    '</div>' +
-    '<p class="ep-note">Protected against bots and crawlers. The address may contain invisible characters &mdash; paste into your mail client as usual.</p>';
+    '<div class="ep-address">' + addrSpans + '</div>' +
+    '<p class="ep-note">Protected against bots and crawlers. Paste into your mail client as usual.</p>';
 
   function openPopover() {
     emailPopover.classList.add("visible");
