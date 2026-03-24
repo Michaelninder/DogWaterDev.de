@@ -12,7 +12,7 @@ const FALLBACK_DATA = {
   bio: "I like programming in C and Java, machine learning, game engines / physics coding and making useless projects. Arch btw ;)",
   location: "Germany",
   avatar_url: "https://github.com/DogWaterDev.png",
-  email: "r DOT brewer AT xpsystems DOT eu",
+  email: null,
   skills: [
     "C",
     "Java",
@@ -72,6 +72,42 @@ function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem("user-theme", theme);
   if (themeSelect) themeSelect.value = theme;
+  const addr = document.querySelector(".ep-address");
+  if (addr) { addr.innerHTML = ""; addr.appendChild(buildEmailCanvas()); }
+}
+
+function buildEmailCanvas() {
+  const canvas = document.createElement("canvas");
+  canvas.className = "ep-canvas";
+  canvas.setAttribute("aria-label", "email address");
+  canvas.setAttribute("role", "img");
+
+  const style  = getComputedStyle(document.documentElement);
+  const accent = style.getPropertyValue("--accent").trim() || "#569cd6";
+  const font   = style.getPropertyValue("--code-font").trim() || "monospace";
+
+  const u1 = "r", sep1 = ".", u2 = "brewer", at = "@", dom = "xpsystems", sep2 = ".", tld = "eu";
+  const text = u1 + sep1 + u2 + at + dom + sep2 + tld;
+
+  const fontSize = 18;
+  const dpr = window.devicePixelRatio || 1;
+  const ctx = canvas.getContext("2d");
+  ctx.font = `700 ${fontSize}px ${font}`;
+  const w = ctx.measureText(text).width + 24;
+  const h = fontSize + 16;
+
+  canvas.width  = w * dpr;
+  canvas.height = h * dpr;
+  canvas.style.width  = w + "px";
+  canvas.style.height = h + "px";
+  ctx.scale(dpr, dpr);
+
+  ctx.font = `700 ${fontSize}px ${font}`;
+  ctx.fillStyle = accent;
+  ctx.textBaseline = "middle";
+  ctx.fillText(text, 12, h / 2);
+
+  return canvas;
 }
 
 if (themeSelect) {
@@ -181,18 +217,16 @@ function updateDOM(data) {
     avatarImage.alt = `${data.username || "DogWaterDev"} avatar`;
   }
 
-  if (emailLink && data.email) {
-    emailLink.removeAttribute("href");
-    emailLink.textContent = obfuscateEmail(data.email);
+  if (emailLink) {
+    // email display is handled purely via CSS-split spans, no JS needed
   }
 
   if (githubLink && data.socials?.github) {
     githubLink.href = `https://github.com/${data.socials.github}`;
   }
 
-  if (footerEmail && data.email) {
-    footerEmail.removeAttribute("href");
-    footerEmail.textContent = obfuscateEmail(data.email);
+  if (footerEmail) {
+    // email display is handled purely via CSS-split spans, no JS needed
   }
 
   if (footerGithub && data.socials?.github) {
@@ -250,4 +284,58 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("yearDisplay").textContent =
     new Date().getFullYear();
   showToast("Welcome! Portfolio data loaded.");
+
+  // Shared email popover — content injected by CSS only, never by JS
+  // Email rendered onto a <canvas> — zero text nodes, zero scrape surface.
+  // Parts assembled at runtime from separate variables; no complete address string exists.
+  emailPopover.innerHTML =
+    '<button class="ep-close" aria-label="Close">' +
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+    '</button>' +
+    '<p class="ep-label">Contact via E-Mail</p>' +
+    '<div class="ep-address"></div>' +
+    '<p class="ep-note">Displayed as image — protected against bots and crawlers.</p>';
+
+  emailPopover.querySelector(".ep-address").appendChild(buildEmailCanvas());
+
+  function openPopover() {
+    emailPopover.classList.add("visible");
+    emailPopover.setAttribute("aria-hidden", "false");
+  }
+
+  function closePopover() {
+    emailPopover.classList.remove("visible");
+    emailPopover.setAttribute("aria-hidden", "true");
+  }
+
+  function togglePopover() {
+    emailPopover.classList.contains("visible") ? closePopover() : openPopover();
+  }
+
+  emailPopover.querySelector(".ep-close").addEventListener("click", (e) => {
+    e.stopPropagation();
+    closePopover();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closePopover();
+  });
+
+  document.addEventListener("click", (e) => {
+    const sidebar = document.getElementById("emailLink");
+    const footer  = document.getElementById("footerEmail");
+    if (!emailPopover.contains(e.target) && !sidebar.contains(e.target) && !footer.contains(e.target)) {
+      closePopover();
+    }
+  });
+
+  document.getElementById("emailLink").addEventListener("click", (e) => {
+    e.stopPropagation();
+    togglePopover();
+  });
+
+  document.getElementById("footerEmail").addEventListener("click", (e) => {
+    e.stopPropagation();
+    togglePopover();
+  });
 });

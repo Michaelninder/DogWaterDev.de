@@ -858,3 +858,109 @@ section#hero {
 html {
     scroll-behavior: smooth;
 }
+
+/* Email button — reset browser button defaults, inherit social-item styles */
+button.social-item {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+}
+
+#footerEmail {
+    cursor: pointer;
+}
+
+/* Hide the hover tooltip when the popover is open */
+#emailLink.popover-open .tooltip {
+    display: none;
+}
+
+/*
+  Email rendered as canvas image — no text nodes exist anywhere.
+*/
+.ep-address {
+    display: flex;
+    align-items: center;
+    min-height: 34px;
+}
+
+.ep-canvas {
+    display: block;
+    image-rendering: crisp-edges;
+}
+
+.email-popover {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 300px;
+    max-width: 96vw;
+    width: 380px;
+    background-color: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 24px 20px;
+    font-size: 14px;
+    font-family: var(--code-font);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    z-index: 9999;
+    color: var(--fg-1);
+    user-select: text;
+    pointer-events: auto;
+}
+
+.email-popover.visible {
+    display: flex;
+}
+
+.ep-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--fg-2);
+    padding: 4px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s, background 0.15s;
+}
+
+.ep-close:hover {
+    color: var(--fg-1);
+    background: var(--bg-3);
+}
+
+.ep-close svg {
+    width: 16px;
+    height: 16px;
+}
+
+.ep-label {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--fg-2);
+}
+
+
+.ep-note {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--fg-2);
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+    user-select: none;
+}
