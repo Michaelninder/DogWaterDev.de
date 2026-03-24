@@ -878,30 +878,39 @@ button.social-item {
 }
 
 /*
-  Email address lives ONLY here, in CSS content values.
-  Scrapers that parse HTML/JS never see it.
-  The spans in the popover are empty — content is injected by these rules.
+  Email address — each part stored REVERSED in content, displayed RTL.
+  Scrapers reading CSS get reversed strings, not a valid email.
 */
+#emailPopover .ep-user1 { unicode-bidi: bidi-override; direction: rtl; }
 #emailPopover .ep-user1::before { content: "r"; }
 #emailPopover .ep-dot1::before  { content: "."; }
-#emailPopover .ep-user2::before { content: "brewer"; }
+#emailPopover .ep-user2 { unicode-bidi: bidi-override; direction: rtl; }
+#emailPopover .ep-user2::before { content: "rewerb"; }
 #emailPopover .ep-at::before    { content: "@"; }
-#emailPopover .ep-dom::before   { content: "xpsystems"; }
+#emailPopover .ep-dom { unicode-bidi: bidi-override; direction: rtl; }
+#emailPopover .ep-dom::before   { content: "smetsyspx"; }
 #emailPopover .ep-dot2::before  { content: "."; }
-#emailPopover .ep-tld::before   { content: "eu"; }
+#emailPopover .ep-tld { unicode-bidi: bidi-override; direction: rtl; }
+#emailPopover .ep-tld::before   { content: "ue"; }
 
 .email-popover {
     display: none;
     position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 300px;
+    max-width: 96vw;
     background-color: var(--bg-2);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 10px 14px;
-    font-size: 13px;
+    padding: 16px 20px;
+    font-size: 14px;
     font-family: var(--code-font);
     white-space: nowrap;
     box-shadow: var(--shadow);
     z-index: 9999;
+    justify-content: center;
     align-items: center;
     color: var(--fg-1);
     user-select: none;

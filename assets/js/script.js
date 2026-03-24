@@ -260,16 +260,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     '<span class="ep-dot2"></span>' +
     '<span class="ep-tld"></span>';
 
-  function positionPopover(anchor) {
-    const r = anchor.getBoundingClientRect();
-    // try left of anchor, fall back to below
-    emailPopover.style.top  = (r.top + r.height / 2) + "px";
-    emailPopover.style.left = (r.left - 10) + "px";
-    emailPopover.style.transform = "translate(-100%, -50%)";
-  }
-
-  function openPopover(anchor) {
-    positionPopover(anchor);
+  function openPopover() {
     emailPopover.classList.add("visible");
     emailPopover.setAttribute("aria-hidden", "false");
   }
@@ -277,6 +268,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   function closePopover() {
     emailPopover.classList.remove("visible");
     emailPopover.setAttribute("aria-hidden", "true");
+  }
+
+  function togglePopover() {
+    emailPopover.classList.contains("visible") ? closePopover() : openPopover();
   }
 
   document.addEventListener("click", (e) => {
@@ -289,11 +284,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.getElementById("emailLink").addEventListener("click", (e) => {
     e.stopPropagation();
-    emailPopover.classList.contains("visible") ? closePopover() : openPopover(e.currentTarget);
+    togglePopover();
   });
 
   document.getElementById("footerEmail").addEventListener("click", (e) => {
     e.stopPropagation();
-    emailPopover.classList.contains("visible") ? closePopover() : openPopover(e.currentTarget);
+    togglePopover();
   });
 });
