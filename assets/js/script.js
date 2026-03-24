@@ -12,38 +12,61 @@ const FALLBACK_DATA = {
   bio: "I like programming in C and Java, machine learning, game engines / physics coding and making useless projects. Arch btw ;)",
   location: "Germany",
   avatar_url: "https://github.com/DogWaterDev.png",
-  email: "r.brewer@xpsystems.eu",
-  skills: ["C", "Java", "GLSL", "PHP", "Git", "Bash", "MySQL", "Python", "Laravel", "Linux", "BSD", "JS/HTML/CSS"],
+  email: "r DOT brewer AT xpsystems DOT eu",
+  skills: [
+    "C",
+    "Java",
+    "GLSL",
+    "PHP",
+    "Git",
+    "Bash",
+    "MySQL",
+    "Python",
+    "Laravel",
+    "Linux",
+    "BSD",
+    "JS/HTML/CSS",
+  ],
   projects: [
     {
       title: "Custom Compiler",
       description: "Building a compiler for my own programming language in C.",
       url: null,
-      tags: ["C", "Systems", "Compilers"]
+      tags: ["C", "Systems", "Compilers"],
     },
     {
       title: "keklist",
-      description: "checklist system, gui and cli options, can have cloud based (my server) or locally based db.",
+      description:
+        "checklist system, gui and cli options, can have cloud based (my server) or locally based db.",
       url: "https://github.com/DogWaterDev/keklist",
-      tags: ["C", "MySQL"]
+      tags: ["C", "MySQL"],
     },
     {
       title: "Orchestra SkyBlock",
-      description: "SkyBlock-System Plugin for Minecraft which uses dependencies like KomodoPerms and WorldFramework.",
+      description:
+        "SkyBlock-System Plugin for Minecraft which uses dependencies like KomodoPerms and WorldFramework.",
       url: "https://github.com/DogWaterDev/Orchestra-SkyBlock",
-      tags: ["Java", "Bukkit-API", "Spigot-API"]
-    }
+      tags: ["Java", "Bukkit-API", "Spigot-API"],
+    },
   ],
   socials: {
     github: "DogWaterDev",
-    personal_website: "https://dogwaterdev.de"
-  }
+    personal_website: "https://dogwaterdev.de",
+  },
 };
 
 const themeSelect = document.getElementById("themeSelect");
 const toggleBtn = document.querySelector(".mobile-toggle");
 const navLinks = document.querySelector(".nav-links");
 const body = document.body;
+
+function obfuscateEmail(email) {
+  return email
+    .replace(/@/, " AT ")
+    .replace(/\./g, " DOT ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
 function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
@@ -55,7 +78,8 @@ if (themeSelect) {
   themeSelect.addEventListener("change", (e) => applyTheme(e.target.value));
 }
 
-const savedTheme = localStorage.getItem("user-theme") || DEFAULT_SETTINGS.theme;
+const savedTheme =
+  localStorage.getItem("user-theme") || DEFAULT_SETTINGS.theme;
 applyTheme(savedTheme);
 
 window.addEventListener("scroll", () => {
@@ -117,7 +141,10 @@ async function fetchProfileData() {
     if (!response.ok) throw new Error("API fetch failed");
 
     const data = await response.json();
-    localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: now }));
+    localStorage.setItem(
+      CACHE_KEY,
+      JSON.stringify({ data, timestamp: now })
+    );
     return data;
   } catch (error) {
     console.error("Failed to fetch profile:", error);
@@ -138,11 +165,15 @@ function updateDOM(data) {
   const projectGrid = document.getElementById("projectGrid");
   const apiRequestCount = document.getElementById("apiRequestCount");
 
-  if (heroName) heroName.textContent = data.username || data.name || "DogWaterDev";
+  if (heroName)
+    heroName.textContent = data.username || data.name || "DogWaterDev";
 
   if (heroBio && data.bio) {
     const locationSpan = `<span class="hero-highlight" id="heroLocation">${data.location || "Germany"}</span>`;
-    heroBio.innerHTML = data.bio.replace(data.location || "Germany", locationSpan);
+    heroBio.innerHTML = data.bio.replace(
+      data.location || "Germany",
+      locationSpan
+    );
   }
 
   if (avatarImage && data.avatar_url) {
@@ -151,7 +182,8 @@ function updateDOM(data) {
   }
 
   if (emailLink && data.email) {
-    emailLink.href = `mailto:${data.email}`;
+    emailLink.removeAttribute("href");
+    emailLink.textContent = obfuscateEmail(data.email);
   }
 
   if (githubLink && data.socials?.github) {
@@ -159,44 +191,55 @@ function updateDOM(data) {
   }
 
   if (footerEmail && data.email) {
-    footerEmail.href = `mailto:${data.email}`;
-    footerEmail.textContent = data.email;
+    footerEmail.removeAttribute("href");
+    footerEmail.textContent = obfuscateEmail(data.email);
   }
 
   if (footerGithub && data.socials?.github) {
     footerGithub.href = `https://github.com/${data.socials.github}`;
     const usernameSpan = footerGithub.querySelector("span");
-    if (usernameSpan) usernameSpan.textContent = `@${data.socials.github}`;
+    if (usernameSpan)
+      usernameSpan.textContent = `@${data.socials.github}`;
   }
 
   if (techStack && data.skills?.length > 0) {
-    techStack.innerHTML = data.skills.map(skill =>
-      `<div class="tech-badge">${skill}</div>`
-    ).join("");
+    techStack.innerHTML = data.skills
+      .map((skill) => `<div class="tech-badge">${skill}</div>`)
+      .join("");
   }
 
   if (projectGrid && data.projects?.length > 0) {
-    projectGrid.innerHTML = data.projects.map(project => {
-      const tags = project.tags || (project.description?.match(/\b[A-Z][a-zA-Z]*\b/g) || []).slice(0, 3);
-      const linkHTML = project.url ? `<a href="${project.url}" class="link">GitHub</a>` : "";
+    projectGrid.innerHTML = data.projects
+      .map((project) => {
+        const tags =
+          project.tags ||
+          (project.description?.match(/\b[A-Z][a-zA-Z]*\b/g) || []).slice(
+            0,
+            3
+          );
+        const linkHTML = project.url
+          ? `<a href="${project.url}" class="link">GitHub</a>`
+          : "";
 
-      return `
+        return `
         <article class="project-card">
           <div class="project-content">
             <h3 class="project-title">${project.title || project.name}</h3>
             <p class="project-description">${project.description || ""}</p>
             ${linkHTML}
             <div class="tag-group">
-              ${tags.map(tag => `<span class="tag">${tag}</span>`).join("")}
+              ${tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}
             </div>
           </div>
         </article>
       `;
-    }).join("");
+      })
+      .join("");
   }
 
   if (apiRequestCount && data.api_request_count !== undefined) {
-    apiRequestCount.textContent = data.api_request_count.toLocaleString();
+    apiRequestCount.textContent =
+      data.api_request_count.toLocaleString();
   }
 }
 
@@ -204,6 +247,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const profileData = await fetchProfileData();
   updateDOM(profileData);
 
-  document.getElementById("yearDisplay").textContent = new Date().getFullYear();
+  document.getElementById("yearDisplay").textContent =
+    new Date().getFullYear();
   showToast("Welcome! Portfolio data loaded.");
 });
