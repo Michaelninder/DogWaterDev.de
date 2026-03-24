@@ -12,7 +12,7 @@ const FALLBACK_DATA = {
   bio: "I like programming in C and Java, machine learning, game engines / physics coding and making useless projects. Arch btw ;)",
   location: "Germany",
   avatar_url: "https://github.com/DogWaterDev.png",
-  email: "e.oerjre@kcflfgrzf.rh", // ROT13
+  email: null,
   skills: [
     "C",
     "Java",
@@ -181,16 +181,16 @@ function updateDOM(data) {
     avatarImage.alt = `${data.username || "DogWaterDev"} avatar`;
   }
 
-  if (emailLink && data.email) {
-    // email is stored in data-attributes on the button; popover is wired separately
+  if (emailLink) {
+    // email display is handled purely via CSS-split spans, no JS needed
   }
 
   if (githubLink && data.socials?.github) {
     githubLink.href = `https://github.com/${data.socials.github}`;
   }
 
-  if (footerEmail && data.email) {
-    // email assembled from data-attributes in DOMContentLoaded, not from API data
+  if (footerEmail) {
+    // email display is handled purely via CSS-split spans, no JS needed
   }
 
   if (footerGithub && data.socials?.github) {
@@ -249,52 +249,51 @@ document.addEventListener("DOMContentLoaded", async () => {
     new Date().getFullYear();
   showToast("Welcome! Portfolio data loaded.");
 
-  // ROT13 decode — runs only on user interaction, never at page load
-  function rot13(s) {
-    return s.replace(/[a-zA-Z]/g, c => {
-      const base = c <= 'Z' ? 65 : 97;
-      return String.fromCharCode(((c.charCodeAt(0) - base + 13) % 26) + base);
-    });
+  // Shared email popover — content injected by CSS only, never by JS
+  const emailPopover = document.getElementById("emailPopover");
+  emailPopover.innerHTML =
+    '<span class="ep-user1"></span>' +
+    '<span class="ep-dot1"></span>' +
+    '<span class="ep-user2"></span>' +
+    '<span class="ep-at"></span>' +
+    '<span class="ep-dom"></span>' +
+    '<span class="ep-dot2"></span>' +
+    '<span class="ep-tld"></span>';
+
+  function positionPopover(anchor) {
+    const r = anchor.getBoundingClientRect();
+    // try left of anchor, fall back to below
+    emailPopover.style.top  = (r.top + r.height / 2) + "px";
+    emailPopover.style.left = (r.left - 10) + "px";
+    emailPopover.style.transform = "translate(-100%, -50%)";
   }
 
-  // Footer email — show obfuscated display text, decode only on click
-  const footerEmailEl = document.getElementById("footerEmail");
-  if (footerEmailEl) {
-    footerEmailEl.textContent = "r.brewer [at] xpsystems.eu";
-    footerEmailEl.style.cursor = "pointer";
-    footerEmailEl.addEventListener("click", () => {
-      const addr = rot13(footerEmailEl.dataset.e);
-      window.location.href = "mailto:" + addr;
-    });
+  function openPopover(anchor) {
+    positionPopover(anchor);
+    emailPopover.classList.add("visible");
+    emailPopover.setAttribute("aria-hidden", "false");
   }
 
-  // Popover for socialsBar email button
-  const emailBtn = document.getElementById("emailLink");
-  const popover = document.getElementById("emailPopover");
-  const popoverText = document.getElementById("emailPopoverText");
-  const popoverLink = document.getElementById("emailPopoverLink");
-
-  if (emailBtn && popover) {
-    // Show a human-readable but non-scrapeable hint before click
-    popoverText.textContent = "r.brewer [at] xpsystems.eu";
-    // popoverLink href is set only when user clicks "open"
-    popoverLink.addEventListener("click", (e) => {
-      e.preventDefault();
-      const addr = rot13(emailBtn.dataset.e);
-      window.location.href = "mailto:" + addr;
-    });
-
-    emailBtn.addEventListener("click", (ev) => {
-      ev.stopPropagation();
-      const isOpen = popover.classList.toggle("visible");
-      emailBtn.classList.toggle("popover-open", isOpen);
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!emailBtn.contains(e.target)) {
-        popover.classList.remove("visible");
-        emailBtn.classList.remove("popover-open");
-      }
-    });
+  function closePopover() {
+    emailPopover.classList.remove("visible");
+    emailPopover.setAttribute("aria-hidden", "true");
   }
+
+  document.addEventListener("click", (e) => {
+    const sidebar = document.getElementById("emailLink");
+    const footer  = document.getElementById("footerEmail");
+    if (!sidebar.contains(e.target) && !footer.contains(e.target)) {
+      closePopover();
+    }
+  });
+
+  document.getElementById("emailLink").addEventListener("click", (e) => {
+    e.stopPropagation();
+    emailPopover.classList.contains("visible") ? closePopover() : openPopover(e.currentTarget);
+  });
+
+  document.getElementById("footerEmail").addEventListener("click", (e) => {
+    e.stopPropagation();
+    emailPopover.classList.contains("visible") ? closePopover() : openPopover(e.currentTarget);
+  });
 });
