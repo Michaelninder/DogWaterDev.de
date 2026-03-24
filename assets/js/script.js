@@ -72,6 +72,42 @@ function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem("user-theme", theme);
   if (themeSelect) themeSelect.value = theme;
+  const addr = document.querySelector(".ep-address");
+  if (addr) { addr.innerHTML = ""; addr.appendChild(buildEmailCanvas()); }
+}
+
+function buildEmailCanvas() {
+  const canvas = document.createElement("canvas");
+  canvas.className = "ep-canvas";
+  canvas.setAttribute("aria-label", "email address");
+  canvas.setAttribute("role", "img");
+
+  const style  = getComputedStyle(document.documentElement);
+  const accent = style.getPropertyValue("--accent").trim() || "#569cd6";
+  const font   = style.getPropertyValue("--code-font").trim() || "monospace";
+
+  const u1 = "r", sep1 = ".", u2 = "brewer", at = "@", dom = "xpsystems", sep2 = ".", tld = "eu";
+  const text = u1 + sep1 + u2 + at + dom + sep2 + tld;
+
+  const fontSize = 18;
+  const dpr = window.devicePixelRatio || 1;
+  const ctx = canvas.getContext("2d");
+  ctx.font = `700 ${fontSize}px ${font}`;
+  const w = ctx.measureText(text).width + 24;
+  const h = fontSize + 16;
+
+  canvas.width  = w * dpr;
+  canvas.height = h * dpr;
+  canvas.style.width  = w + "px";
+  canvas.style.height = h + "px";
+  ctx.scale(dpr, dpr);
+
+  ctx.font = `700 ${fontSize}px ${font}`;
+  ctx.fillStyle = accent;
+  ctx.textBaseline = "middle";
+  ctx.fillText(text, 12, h / 2);
+
+  return canvas;
 }
 
 if (themeSelect) {
@@ -250,34 +286,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   showToast("Welcome! Portfolio data loaded.");
 
   // Shared email popover — content injected by CSS only, never by JS
-  const emailPopover = document.getElementById("emailPopover");
-
-  // Characters split into individual spans with CSS order — visual order differs from DOM order.
-  // Scrapers reading textContent/innerHTML get a scrambled string, not a valid email.
-  // Humans see and select the correctly ordered address.
-  const chars = [
-    // [char, visual-order]
-    ['r',  1], ['.', 2], ['b', 3], ['r', 4], ['e', 5], ['w', 6], ['e', 7], ['r', 8],
-    ['@',  9],
-    ['x', 10], ['p', 11], ['s', 12], ['y', 13], ['s', 14], ['t', 15], ['e', 16], ['m', 17], ['s', 18],
-    ['.', 19],
-    ['e', 20], ['u', 21]
-  ];
-
-  // Shuffle DOM order so textContent is scrambled
-  const shuffled = [...chars].sort(() => Math.random() - 0.5);
-
-  const addrSpans = shuffled
-    .map(([ch, ord]) => `<span class="ep-ch" style="order:${ord}">${ch}</span>`)
-    .join('');
-
+  // Email rendered onto a <canvas> — zero text nodes, zero scrape surface.
+  // Parts assembled at runtime from separate variables; no complete address string exists.
   emailPopover.innerHTML =
     '<button class="ep-close" aria-label="Close">' +
       '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
     '</button>' +
-    '<p class="ep-label">Contact via E-Mail &mdash; select to copy</p>' +
-    '<div class="ep-address">' + addrSpans + '</div>' +
-    '<p class="ep-note">Protected against bots and crawlers. Paste into your mail client as usual.</p>';
+    '<p class="ep-label">Contact via E-Mail</p>' +
+    '<div class="ep-address"></div>' +
+    '<p class="ep-note">Displayed as image — protected against bots and crawlers.</p>';
+
+  emailPopover.querySelector(".ep-address").appendChild(buildEmailCanvas());
 
   function openPopover() {
     emailPopover.classList.add("visible");

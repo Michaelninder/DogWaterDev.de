@@ -878,22 +878,17 @@ button.social-item {
 }
 
 /*
-  Email address — individual character spans shuffled in DOM order,
-  CSS flexbox `order` property controls visual order.
-  Scrapers reading textContent get a random scramble; humans see the correct address.
+  Email rendered as canvas image — no text nodes exist anywhere.
 */
 .ep-address {
     display: flex;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: 0.02em;
-    cursor: text;
-    user-select: text;
+    align-items: center;
+    min-height: 34px;
 }
 
-.ep-ch {
-    user-select: text;
+.ep-canvas {
+    display: block;
+    image-rendering: crisp-edges;
 }
 
 .email-popover {
