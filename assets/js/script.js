@@ -252,13 +252,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Shared email popover — content injected by CSS only, never by JS
   const emailPopover = document.getElementById("emailPopover");
   emailPopover.innerHTML =
-    '<span class="ep-user1"></span>' +
-    '<span class="ep-dot1"></span>' +
-    '<span class="ep-user2"></span>' +
-    '<span class="ep-at"></span>' +
-    '<span class="ep-dom"></span>' +
-    '<span class="ep-dot2"></span>' +
-    '<span class="ep-tld"></span>';
+    '<button class="ep-close" aria-label="Close">' +
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+    '</button>' +
+    '<p class="ep-label">Contact via E-Mail &mdash; select to copy</p>' +
+    '<div class="ep-address">' +
+      '<span class="ep-user1"></span>' +
+      '<span class="ep-dot1"></span>' +
+      '<span class="ep-user2"></span>' +
+      '<span class="ep-at"></span>' +
+      '<span class="ep-dom"></span>' +
+      '<span class="ep-dot2"></span>' +
+      '<span class="ep-tld"></span>' +
+    '</div>' +
+    '<p class="ep-note">Protected against bots and crawlers. The address may contain invisible characters &mdash; paste into your mail client as usual.</p>';
 
   function openPopover() {
     emailPopover.classList.add("visible");
@@ -274,10 +281,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     emailPopover.classList.contains("visible") ? closePopover() : openPopover();
   }
 
+  emailPopover.querySelector(".ep-close").addEventListener("click", (e) => {
+    e.stopPropagation();
+    closePopover();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closePopover();
+  });
+
   document.addEventListener("click", (e) => {
     const sidebar = document.getElementById("emailLink");
     const footer  = document.getElementById("footerEmail");
-    if (!sidebar.contains(e.target) && !footer.contains(e.target)) {
+    if (!emailPopover.contains(e.target) && !sidebar.contains(e.target) && !footer.contains(e.target)) {
       closePopover();
     }
   });
