@@ -12,7 +12,7 @@ const FALLBACK_DATA = {
   bio: "I like programming in C and Java, machine learning, game engines / physics coding and making useless projects. Arch btw ;)",
   location: "Germany",
   avatar_url: "https://github.com/DogWaterDev.png",
-  email: "r.brewer@xpsystems.eu",
+  email: "e.oerjre@kcflfgrzf.rh", // ROT13
   skills: [
     "C",
     "Java",
@@ -249,17 +249,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     new Date().getFullYear();
   showToast("Welcome! Portfolio data loaded.");
 
-  // Assemble email from data attributes (anti-scraping)
-  function buildEmail(el) {
-    return `${el.dataset.u}@${el.dataset.d}.${el.dataset.t}`;
+  // ROT13 decode — runs only on user interaction, never at page load
+  function rot13(s) {
+    return s.replace(/[a-zA-Z]/g, c => {
+      const base = c <= 'Z' ? 65 : 97;
+      return String.fromCharCode(((c.charCodeAt(0) - base + 13) % 26) + base);
+    });
   }
 
-  // Footer email
+  // Footer email — show obfuscated display text, decode only on click
   const footerEmailEl = document.getElementById("footerEmail");
-  if (footerEmailEl && footerEmailEl.dataset.u) {
-    const addr = buildEmail(footerEmailEl);
-    footerEmailEl.textContent = addr;
-    footerEmailEl.href = "mailto:" + addr;
+  if (footerEmailEl) {
+    footerEmailEl.textContent = "r.brewer [at] xpsystems.eu";
+    footerEmailEl.style.cursor = "pointer";
+    footerEmailEl.addEventListener("click", () => {
+      const addr = rot13(footerEmailEl.dataset.e);
+      window.location.href = "mailto:" + addr;
+    });
   }
 
   // Popover for socialsBar email button
@@ -268,13 +274,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   const popoverText = document.getElementById("emailPopoverText");
   const popoverLink = document.getElementById("emailPopoverLink");
 
-  if (emailBtn && popover && emailBtn.dataset.u) {
-    const addr = buildEmail(emailBtn);
-    popoverText.textContent = addr;
-    popoverLink.href = "mailto:" + addr;
+  if (emailBtn && popover) {
+    // Show a human-readable but non-scrapeable hint before click
+    popoverText.textContent = "r.brewer [at] xpsystems.eu";
+    // popoverLink href is set only when user clicks "open"
+    popoverLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      const addr = rot13(emailBtn.dataset.e);
+      window.location.href = "mailto:" + addr;
+    });
 
-    emailBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
+    emailBtn.addEventListener("click", (ev) => {
+      ev.stopPropagation();
       const isOpen = popover.classList.toggle("visible");
       emailBtn.classList.toggle("popover-open", isOpen);
     });
