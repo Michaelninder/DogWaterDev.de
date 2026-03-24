@@ -8,12 +8,16 @@
   </head>
   <body>
     <div id="socialsBar">
-      <a aria-label="Send Email" class="social-item" id="emailLink" href="mailto:r.brewer@xpsystems.eu">
+      <button aria-label="Show Email" class="social-item" id="emailLink" data-u="r.brewer" data-d="xpsystems" data-t="eu" type="button">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
         </svg>
         <div class="tooltip">E-Mail</div>
-      </a>
+        <div class="email-popover" id="emailPopover" role="tooltip">
+          <span id="emailPopoverText"></span>
+          <a id="emailPopoverLink" href="#" class="email-popover-action">open</a>
+        </div>
+      </button>
       <a aria-label="GitHub Profile" class="social-item" id="githubLink" href="https://github.com/DogWaterDev">
         <svg xmlns="http://www.w3.org/2000/svg" width="98" height="96" viewBox="0 0 98 96" fill="none">
           <g clip-path="url(#clip0_730_27126)">
@@ -178,7 +182,7 @@
 
         <div class="footer-section">
           <h4>Connect</h4>
-          <a class="link" id="footerEmail">r DOT brewer AT xpsystems DOT eu</a>
+          <a class="link" id="footerEmail" data-u="r.brewer" data-d="xpsystems" data-t="eu"></a>
           <div class="social-icons">
             <a href="https://github.com/DogWaterDev" id="footerGithub" class="github-link" aria-label="GitHub Profile">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 96" fill="currentColor">

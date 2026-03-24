@@ -12,7 +12,7 @@ const FALLBACK_DATA = {
   bio: "I like programming in C and Java, machine learning, game engines / physics coding and making useless projects. Arch btw ;)",
   location: "Germany",
   avatar_url: "https://github.com/DogWaterDev.png",
-  email: "r DOT brewer AT xpsystems DOT eu",
+  email: "r.brewer@xpsystems.eu",
   skills: [
     "C",
     "Java",
@@ -182,8 +182,7 @@ function updateDOM(data) {
   }
 
   if (emailLink && data.email) {
-    emailLink.removeAttribute("href");
-    emailLink.textContent = obfuscateEmail(data.email);
+    // email is stored in data-attributes on the button; popover is wired separately
   }
 
   if (githubLink && data.socials?.github) {
@@ -191,8 +190,7 @@ function updateDOM(data) {
   }
 
   if (footerEmail && data.email) {
-    footerEmail.removeAttribute("href");
-    footerEmail.textContent = obfuscateEmail(data.email);
+    // email assembled from data-attributes in DOMContentLoaded, not from API data
   }
 
   if (footerGithub && data.socials?.github) {
@@ -250,4 +248,42 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("yearDisplay").textContent =
     new Date().getFullYear();
   showToast("Welcome! Portfolio data loaded.");
+
+  // Assemble email from data attributes (anti-scraping)
+  function buildEmail(el) {
+    return `${el.dataset.u}@${el.dataset.d}.${el.dataset.t}`;
+  }
+
+  // Footer email
+  const footerEmailEl = document.getElementById("footerEmail");
+  if (footerEmailEl && footerEmailEl.dataset.u) {
+    const addr = buildEmail(footerEmailEl);
+    footerEmailEl.textContent = addr;
+    footerEmailEl.href = "mailto:" + addr;
+  }
+
+  // Popover for socialsBar email button
+  const emailBtn = document.getElementById("emailLink");
+  const popover = document.getElementById("emailPopover");
+  const popoverText = document.getElementById("emailPopoverText");
+  const popoverLink = document.getElementById("emailPopoverLink");
+
+  if (emailBtn && popover && emailBtn.dataset.u) {
+    const addr = buildEmail(emailBtn);
+    popoverText.textContent = addr;
+    popoverLink.href = "mailto:" + addr;
+
+    emailBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = popover.classList.toggle("visible");
+      emailBtn.classList.toggle("popover-open", isOpen);
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!emailBtn.contains(e.target)) {
+        popover.classList.remove("visible");
+        emailBtn.classList.remove("popover-open");
+      }
+    });
+  }
 });

@@ -858,3 +858,88 @@ section#hero {
 html {
     scroll-behavior: smooth;
 }
+
+/* Email button — reset browser button defaults, inherit social-item styles */
+button.social-item {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+}
+
+/* Hide the hover tooltip when the popover is open */
+#emailLink.popover-open .tooltip {
+    display: none;
+}
+
+.email-popover {
+    display: none;
+    position: absolute;
+    right: calc(100% + 14px);
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    white-space: nowrap;
+    box-shadow: var(--shadow);
+    z-index: 1000;
+    gap: 10px;
+    align-items: center;
+    pointer-events: auto;
+    color: var(--fg-1);
+    font-family: var(--code-font);
+}
+
+.email-popover.visible {
+    display: flex;
+}
+
+.email-popover::after {
+    content: "";
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent var(--border);
+}
+
+.email-popover-action {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-family: system-ui, sans-serif;
+    font-size: 12px;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    padding: 2px 8px;
+    transition: all 0.15s ease;
+    width: auto;
+}
+
+.email-popover-action:hover {
+    background-color: var(--accent);
+    color: var(--bg-1);
+}
+
+@media (max-width: 768px) {
+    .email-popover {
+        right: auto;
+        left: 50%;
+        top: calc(100% + 12px);
+        transform: translateX(-50%);
+    }
+
+    .email-popover::after {
+        left: 50%;
+        top: -10px;
+        margin-left: -5px;
+        margin-top: 0;
+        border-color: transparent transparent var(--border) transparent;
+    }
+}
