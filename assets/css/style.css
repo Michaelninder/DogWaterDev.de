@@ -859,6 +859,82 @@ html {
     scroll-behavior: smooth;
 }
 
+/* Page load fade-in */
+body {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+/* Active nav link */
+.nav-links li a.active {
+    background-color: var(--bg-3);
+    color: var(--accent);
+}
+
+/* Goal items */
+.goal-item {
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.goal-item::before {
+    content: "›";
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.goal-item:hover {
+    background-color: var(--bg-2);
+}
+
+.goals-list {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+/* Mobile theme selector inside nav */
+.mobile-theme-row {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-theme-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .mobile-theme-row label {
+        font-size: 0.9rem;
+        color: var(--fg-2);
+    }
+
+    .mobile-theme-row select {
+        appearance: none;
+        background-color: var(--bg-3);
+        color: var(--fg-1);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        cursor: pointer;
+    }
+}
+
 /* Email button — reset browser button defaults, inherit social-item styles */
 button.social-item {
     background: none;
@@ -953,6 +1029,25 @@ button.social-item {
     color: var(--fg-2);
 }
 
+
+.easter-egg {
+    position: fixed;
+    bottom: 10px;
+    left: 14px;
+    font-size: 0.7rem;
+    font-family: var(--code-font);
+    color: var(--fg-2);
+    opacity: 0.15;
+    user-select: none;
+    pointer-events: auto;
+    cursor: default;
+    transition: opacity 0.3s ease;
+    z-index: 500;
+}
+
+.easter-egg:hover {
+    opacity: 1;
+}
 
 .ep-note {
     margin: 0;

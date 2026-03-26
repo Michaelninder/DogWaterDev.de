@@ -72,6 +72,8 @@ function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem("user-theme", theme);
   if (themeSelect) themeSelect.value = theme;
+  const mobile = document.getElementById("themeSelectMobile");
+  if (mobile) mobile.value = theme;
   const addr = document.querySelector(".ep-address");
   if (addr) { addr.innerHTML = ""; addr.appendChild(buildEmailCanvas()); }
 }
@@ -112,6 +114,11 @@ function buildEmailCanvas() {
 
 if (themeSelect) {
   themeSelect.addEventListener("change", (e) => applyTheme(e.target.value));
+}
+
+const themeSelectMobile = document.getElementById("themeSelectMobile");
+if (themeSelectMobile) {
+  themeSelectMobile.addEventListener("change", (e) => applyTheme(e.target.value));
 }
 
 const savedTheme =
@@ -278,12 +285,36 @@ function updateDOM(data) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  // Fade in page
+  document.body.classList.add("loaded");
+
   const profileData = await fetchProfileData();
   updateDOM(profileData);
 
   document.getElementById("yearDisplay").textContent =
     new Date().getFullYear();
-  showToast("Welcome! Portfolio data loaded.");
+
+  // Only show welcome toast once per session
+  if (!sessionStorage.getItem("welcomed")) {
+    showToast("Welcome! Portfolio data loaded.");
+    sessionStorage.setItem("welcomed", "1");
+  }
+
+  // Scroll-spy: highlight active nav link
+  const sections = document.querySelectorAll("section[id]");
+  const navAnchors = document.querySelectorAll(".nav-links li a[href^='#']");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        navAnchors.forEach((a) => {
+          a.classList.toggle("active", a.getAttribute("href") === `#${entry.target.id}`);
+        });
+      }
+    });
+  }, { rootMargin: "-40% 0px -55% 0px", threshold: 0 });
+
+  sections.forEach((s) => observer.observe(s));
 
   // Shared email popover — content injected by CSS only, never by JS
   // Email rendered onto a <canvas> — zero text nodes, zero scrape surface.
