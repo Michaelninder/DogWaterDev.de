@@ -1030,6 +1030,25 @@ button.social-item {
 }
 
 
+.easter-egg {
+    position: fixed;
+    bottom: 10px;
+    left: 14px;
+    font-size: 0.7rem;
+    font-family: var(--code-font);
+    color: var(--fg-2);
+    opacity: 0.15;
+    user-select: none;
+    pointer-events: auto;
+    cursor: default;
+    transition: opacity 0.3s ease;
+    z-index: 500;
+}
+
+.easter-egg:hover {
+    opacity: 1;
+}
+
 .ep-note {
     margin: 0;
     font-family: system-ui, sans-serif;
